@@ -28,7 +28,7 @@ consumer = oauth.Consumer(key=CONSUMER_KEY, secret=CONSUMER_SECRET)
 access_token = oauth.Token(key=ACCESS_KEY, secret=ACCESS_SECRET)
 client = oauth.Client(consumer, access_token)
 
-cur.execute("SELECT * FROM tweet")
+cur.execute("SELECT * FROM reply")
 tweets = cur.fetchall()
 
 for tweet in tweets:
@@ -68,8 +68,6 @@ for tweet in tweets:
                     elif max_id>int(retweet['id']):
                         max_id=int(retweet['id'])-1
 
-                if len(retweets)<100:
-                    max_id=0
 
                 print 'id rescue: wait '+str((15*60)/int(response['x-rate-limit-limit']))+' seconds'
                 time.sleep((15*60)/int(response['x-rate-limit-limit']))
