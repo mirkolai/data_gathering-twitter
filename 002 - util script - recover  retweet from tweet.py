@@ -28,12 +28,13 @@ consumer = oauth.Consumer(key=CONSUMER_KEY, secret=CONSUMER_SECRET)
 access_token = oauth.Token(key=ACCESS_KEY, secret=ACCESS_SECRET)
 client = oauth.Client(consumer, access_token)
 
-cur.execute("SELECT id FROM tweet")
+cur.execute("SELECT * FROM tweet")
 tweets = cur.fetchall()
 
 for tweet in tweets:
+    jsonTweet=json.loads(tweet[1])
 
-    if 'retweeted_status' not in tweet: #else it is a retweet
+    if 'retweeted_status' not in jsonTweet: #else it is a retweet
 
         max_id=-1
         while max_id!=0:
@@ -46,25 +47,28 @@ for tweet in tweets:
 
             print endpoint
             response, data = client.request(endpoint)
-            print response
+            #print response
             if response['status']=='200':
+
                 if int(response['x-rate-limit-remaining'])<2:
                     print 'id rescue: wait '+str(int(response['x-rate-limit-reset'])-int(time.time()))+' seconds'
                     time.sleep(int(response['x-rate-limit-reset'])-int(time.time()))
 
-                max_id = 0
-                retweets = json.loads(data)
+                    max_id = 0
+                    retweets = json.loads(data)
 
-                for retweet in retweets:
+                    for retweet in retweets:
 
-                    #print retweet
-                    cur.execute("INSERT retweet (id, json) VALUES (%s,%s) on duplicate key update id=id",(retweet['id'],json.dumps(retweet)))
-                    db.commit()
+                        #print retweet
+                        cur.execute("INSERT retweet (id, json) VALUES (%s,%s) on duplicate key update id=id",(retweet['id'],json.dumps(retweet)))
+                        db.commit()
 
-                    if max_id==0:
-                        max_id=int(retweet['id'])-1
-                    elif max_id>int(retweet['id']):
-                        max_id=int(retweet['id'])-1
+                        if max_id==0:
+                            max_id=int(retweet['id'])-1
+                        elif max_id>int(retweet['id']):
+                            max_id=int(retweet['id'])-1
+                else:
+                    print response['status']
 
                 print 'id rescue: wait '+str((15*60)/int(response['x-rate-limit-limit']))+' seconds'
                 time.sleep((15*60)/int(response['x-rate-limit-limit']))
@@ -75,5 +79,7 @@ for tweet in tweets:
             else:
                 print response['status']
                 max_id=0
+    #else:
+    #    print 'it is a retweet'
 
 db.close()

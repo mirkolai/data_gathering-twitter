@@ -38,6 +38,7 @@ for tweet in tweets:
 
     if jsonTweet['in_reply_to_status_id']!=None:
         endpoint = "https://api.twitter.com/1.1/statuses/show.json?id="+str(jsonTweet['in_reply_to_status_id'])
+        print endpoint
         response, data = client.request(endpoint)
         #print response
         #print response['status']
@@ -48,9 +49,12 @@ for tweet in tweets:
                 print 'id rescue: wait '+str( int(response['x-rate-limit-reset']) - int(time.time()) )+' seconds'
                 time.sleep(int(response['x-rate-limit-reset'])-int(time.time()))
 
-        reply=json.loads(data)
-        cur.execute("INSERT reply (id, json) VALUES (%s,%s) on duplicate key update id=id",(reply['id'],json.dumps(reply)))
-        db.commit()
+            reply=json.loads(data)
+            cur.execute("INSERT reply (id, json) VALUES (%s,%s) on duplicate key update id=id",(reply['id'],json.dumps(reply)))
+            db.commit()
+
+        else:
+            print response['status']
 
         print 'id rescue: wait '+str((15*60)/int(response['x-rate-limit-limit']))+' seconds'
         time.sleep((15*60)/int(response['x-rate-limit-limit']))

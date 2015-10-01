@@ -1,12 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 4.0.10deb1
--- http://www.phpmyadmin.net
---
--- Host: localhost
--- Generato il: Ott 01, 2015 alle 11:20
--- Versione del server: 5.5.44-0ubuntu0.14.04.1
--- Versione PHP: 5.5.9-1ubuntu4.13
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -16,9 +7,6 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
---
--- Database: `UPV_sarcasm_and_weak_ties`
---
 
 -- --------------------------------------------------------
 

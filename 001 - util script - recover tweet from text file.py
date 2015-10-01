@@ -63,6 +63,8 @@ while len(ids) > 0:
             #print json.dumps(tweet)
             cur.execute("INSERT tweet (id, json) VALUES (%s,%s) on duplicate key update id=id",(tweet['id'],json.dumps(tweet)))
             db.commit()
+    else:
+        print response['status']
 
     print 'id rescue: wait '+str((15*60)/int(response['x-rate-limit-limit']))+' seconds'
     time.sleep((15*60)/int(response['x-rate-limit-limit']))

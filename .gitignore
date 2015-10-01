@@ -18,7 +18,7 @@ lib/
 lib64/
 parts/
 sdist/
-var/
+var/*config.py
 *.egg-info/
 .installed.cfg
 *.egg
@@ -55,3 +55,16 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# config
+
+config.py
+
+# data file
+
+data/201*
+
+# other files
+
+sql/UPV_sarcasm_and_weak_ties.sql
+
