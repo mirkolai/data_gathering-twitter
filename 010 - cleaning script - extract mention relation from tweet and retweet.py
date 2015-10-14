@@ -1,11 +1,9 @@
 __author__ = 'nlelab'
 import os
 import MySQLdb
-import oauth2 as oauth
 import time
 import json
 import config as cfg
-from datetime import datetime
 print os.getcwd()
 
 db = MySQLdb.connect(host=cfg.mysql['host'], # your host, usually localhost
@@ -20,7 +18,7 @@ cur.execute('SET CHARACTER SET utf8;')
 cur.execute('SET character_set_connection=utf8;')
 db.commit()
 
-cur.execute("SELECT * FROM tweet")
+cur.execute("SELECT * FROM tweet UNION SELECT * FROM reply")
 tweets = cur.fetchall()
 
 for tweet in tweets:

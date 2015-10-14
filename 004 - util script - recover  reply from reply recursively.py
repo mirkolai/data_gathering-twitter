@@ -45,16 +45,16 @@ while arethereotherreplytoceck:
             cur.execute("select * from reply where id=%s",(jsonTweet['in_reply_to_status_id']))
             result = cur.fetchall()
             if len(result)==0:
-                arethereotherreplytoceck=1
 
                 endpoint = "https://api.twitter.com/1.1/statuses/show.json?id="+str(jsonTweet['in_reply_to_status_id'])
                 print endpoint
                 response, data = client.request(endpoint)
                 #print response
-                #print response['status']
+                print response['status']
                 #print response['x-rate-limit-limit']
                 #print data
                 if response['status']=='200':
+                    arethereotherreplytoceck=1
                     if int(response['x-rate-limit-remaining'])<2:
                         print 'id rescue: wait '+str( int(response['x-rate-limit-reset']) - int(time.time()) )+' seconds'
                         time.sleep(int(response['x-rate-limit-reset'])-int(time.time()))
@@ -65,8 +65,9 @@ while arethereotherreplytoceck:
 
                 print 'id rescue: wait '+str((15*60)/int(response['x-rate-limit-limit']))+' seconds'
                 time.sleep((15*60)/int(response['x-rate-limit-limit']))
-
-        #else:
-        #    print 'it is not a reply'
+            else:
+                print 'tweet in db'
+        else:
+            print 'it is not a reply'
 
 db.close()
