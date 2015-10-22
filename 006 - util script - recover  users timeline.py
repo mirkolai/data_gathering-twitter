@@ -30,13 +30,15 @@ client = oauth.Client(consumer, access_token)
 
 cur.execute("SELECT * FROM tweet")
 tweets = cur.fetchall()
-
+count=0
 for tweet in tweets:
+    count+=1
+
     jsonTweet=json.loads(tweet[1])
 
     cur.execute("select * from user where id=%s",(jsonTweet['user']['id']))
     result = cur.fetchall()
-    print "User: ", jsonTweet['user']['id'], jsonTweet['user']['screen_name']
+    print "User: ", jsonTweet['user']['id'], jsonTweet['user']['screen_name'], count
     if len(result)==0:
 
         max_id=-1
